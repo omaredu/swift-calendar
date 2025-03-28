@@ -60,3 +60,6 @@ playground.xcworkspace
 
 # Personal settings
 *.xcuserdatad/
+
+# Firebase
+GoogleService-Info.plist

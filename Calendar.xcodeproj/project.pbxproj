@@ -6,6 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4464810A2D976C2600AFBF1F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 446481092D976C2600AFBF1F /* FirebaseAuth */; };
+		4464810C2D976C2600AFBF1F /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 4464810B2D976C2600AFBF1F /* FirebaseCore */; };
+		4464810E2D976C2600AFBF1F /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 4464810D2D976C2600AFBF1F /* FirebaseDatabase */; };
+		446481102D976C2600AFBF1F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4464810F2D976C2600AFBF1F /* FirebaseFirestore */; };
+		446481122D976C2600AFBF1F /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 446481112D976C2600AFBF1F /* FirebaseStorage */; };
+		446481142D976C2600AFBF1F /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 446481132D976C2600AFBF1F /* FirebaseVertexAI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		446480E52D975F0600AFBF1F /* Calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +45,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4464810E2D976C2600AFBF1F /* FirebaseDatabase in Frameworks */,
+				446481142D976C2600AFBF1F /* FirebaseVertexAI in Frameworks */,
+				446481102D976C2600AFBF1F /* FirebaseFirestore in Frameworks */,
+				4464810C2D976C2600AFBF1F /* FirebaseCore in Frameworks */,
+				446481122D976C2600AFBF1F /* FirebaseStorage in Frameworks */,
+				4464810A2D976C2600AFBF1F /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +93,12 @@
 			);
 			name = Calendar;
 			packageProductDependencies = (
+				446481092D976C2600AFBF1F /* FirebaseAuth */,
+				4464810B2D976C2600AFBF1F /* FirebaseCore */,
+				4464810D2D976C2600AFBF1F /* FirebaseDatabase */,
+				4464810F2D976C2600AFBF1F /* FirebaseFirestore */,
+				446481112D976C2600AFBF1F /* FirebaseStorage */,
+				446481132D976C2600AFBF1F /* FirebaseVertexAI */,
 			);
 			productName = Calendar;
 			productReference = 446480E52D975F0600AFBF1F /* Calendar.app */;
@@ -107,6 +128,9 @@
 			);
 			mainGroup = 446480DC2D975F0600AFBF1F;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 446480E62D975F0600AFBF1F /* Products */;
 			projectDirPath = "";
@@ -339,6 +363,50 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		446481092D976C2600AFBF1F /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		4464810B2D976C2600AFBF1F /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		4464810D2D976C2600AFBF1F /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		4464810F2D976C2600AFBF1F /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		446481112D976C2600AFBF1F /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		446481132D976C2600AFBF1F /* FirebaseVertexAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseVertexAI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 446480DD2D975F0600AFBF1F /* Project object */;
 }
