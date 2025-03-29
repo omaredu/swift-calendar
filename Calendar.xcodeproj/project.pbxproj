@@ -13,6 +13,7 @@
 		446481102D976C2600AFBF1F /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4464810F2D976C2600AFBF1F /* FirebaseFirestore */; };
 		446481122D976C2600AFBF1F /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 446481112D976C2600AFBF1F /* FirebaseStorage */; };
 		446481142D976C2600AFBF1F /* FirebaseVertexAI in Frameworks */ = {isa = PBXBuildFile; productRef = 446481132D976C2600AFBF1F /* FirebaseVertexAI */; };
+		446481162D9775D000AFBF1F /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 446481152D9775D000AFBF1F /* FirebaseAppCheck */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 				446481142D976C2600AFBF1F /* FirebaseVertexAI in Frameworks */,
 				446481102D976C2600AFBF1F /* FirebaseFirestore in Frameworks */,
 				4464810C2D976C2600AFBF1F /* FirebaseCore in Frameworks */,
+				446481162D9775D000AFBF1F /* FirebaseAppCheck in Frameworks */,
 				446481122D976C2600AFBF1F /* FirebaseStorage in Frameworks */,
 				4464810A2D976C2600AFBF1F /* FirebaseAuth in Frameworks */,
 			);
@@ -99,6 +101,7 @@
 				4464810F2D976C2600AFBF1F /* FirebaseFirestore */,
 				446481112D976C2600AFBF1F /* FirebaseStorage */,
 				446481132D976C2600AFBF1F /* FirebaseVertexAI */,
+				446481152D9775D000AFBF1F /* FirebaseAppCheck */,
 			);
 			productName = Calendar;
 			productReference = 446480E52D975F0600AFBF1F /* Calendar.app */;
@@ -405,6 +408,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseVertexAI;
+		};
+		446481152D9775D000AFBF1F /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 446481082D976C2600AFBF1F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

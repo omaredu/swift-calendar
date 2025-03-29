@@ -7,32 +7,33 @@
 
 import SwiftUI
 import SwiftData
+import FirebaseVertexAI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-//    @Query private var items: [Item]
+    private let vertex = VertexAI.vertexAI()
+    @State private var generatedText = ""
 
     var body: some View {
-        Text("Hello, world!")
+        Button("Generate") {
+            Task {
+                await generate()
+            }
+        }
+        Text(generatedText)
     }
-
-//    private func addItem() {
-//        withAnimation {
-//            let newItem = Item(timestamp: Date())
-//            modelContext.insert(newItem)
-//        }
-//    }
-//
-//    private func deleteItems(offsets: IndexSet) {
-//        withAnimation {
-//            for index in offsets {
-//                modelContext.delete(items[index])
-//            }
-//        }
-//    }
+    
+    private func generate() async {
+        let model = vertex.generativeModel(modelName: "gemini-2.0-flash")
+        do {
+            let response = try await model.generateContent("Say something nice")
+            generatedText = response.text ?? "No text generated"
+        } catch {
+            print(error)
+        }
+    }
 }
 
 #Preview {
     ContentView()
-//        .modelContainer(for: Item.self, inMemory: true)
 }
