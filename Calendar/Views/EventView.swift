@@ -16,11 +16,15 @@ struct EventView: View {
         ZStack(alignment: .bottom) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    VStack(alignment: .leading) {
-                        Text(String(event.getDate()))
-                            .font(.system(size: 40))
-                            .fontWeight(.bold)
-                        Text(DatesUtil.getMonthName(from: event.date))
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading) {
+                            Text(String(event.getDate()))
+                                .font(.system(size: 40))
+                                .fontWeight(.bold)
+                            Text(DatesUtil.getMonthName(from: event.date))
+                        }
+                        Spacer()
+                        CountryBadge(country: event.country)
                     }
 
                     VStack(alignment: .leading, spacing: 20) {
@@ -67,11 +71,13 @@ struct EventView: View {
             }
 
             AddCommentView(text: $commentsViewModel.newCommentText, warning: commentsViewModel.warning) {
-                Task {
-                    do {
-                        try await commentsViewModel.addComment(for: event, user: authViewModel.currentUser!)
-                    } catch {
-                        print(error)
+                if !commentsViewModel.newCommentText.isEmpty {
+                    Task {
+                        do {
+                            try await commentsViewModel.addComment(for: event, user: authViewModel.currentUser!)
+                        } catch {
+                            print(error)
+                        }
                     }
                 }
             }

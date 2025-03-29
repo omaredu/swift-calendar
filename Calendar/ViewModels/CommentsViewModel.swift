@@ -45,7 +45,7 @@ class CommentsViewModel: ObservableObject {
             modelName: "gemini-2.0-flash-lite",
             systemInstruction: .init(
                 parts:
-                    "You are a bot that prevents hate speech. Your task is that, if you detect hate speech or some text that could be missenterpreted. give a oneline brief warning to the user of the potential damage or offense that their comment might cause. If you see no hate speech at all. just return NULL. Dont talk directly to the user, just warn the consequences or how other would feel about it. Use Spanish language."
+                    "You are a bot that prevents hate speech. Your task is that, if you detect hate speech or some text that could be missenterpreted. give a oneline brief warning to the user of the potential damage or offense that their comment might cause. If you see no hate speech at all. just return NULL. Dont talk directly to the user, just warn the consequences or how other would feel about it. Use Spanish language. Try to not be too sensitive. If you see no hate speech at all, just return NULL. "
             )
         )
         do {
@@ -135,6 +135,17 @@ class CommentsViewModel: ObservableObject {
     func addComment(
         text: String? = nil, for event: Event, user: User
     ) async throws -> Comment {
+        // Store comment text before any operations
+        let commentText = text ?? self.newCommentText
+        
+        // Clear the input field immediately on the main thread
+        if text == nil {
+            DispatchQueue.main.async {
+                self.newCommentText = ""
+                self.warning = nil
+            }
+        }
+        
         let userRef = db.collection("users").document(user.id)
         let commentRef = db.collection("events")
             .document(event.id)
@@ -144,7 +155,7 @@ class CommentsViewModel: ObservableObject {
         let now = Date()
         let commentData: [String: Any] = [
             "userId": userRef,
-            "text": text ?? self.newCommentText,
+            "text": commentText,
             "date": now,
         ]
 
@@ -166,9 +177,6 @@ class CommentsViewModel: ObservableObject {
                     NSLocalizedDescriptionKey: "Failed to decode comment"
                 ])
         }
-        
-        newCommentText = ""
-        warning = nil
 
         return comment
     }

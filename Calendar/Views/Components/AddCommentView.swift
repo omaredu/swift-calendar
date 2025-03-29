@@ -40,14 +40,19 @@ struct AddCommentView: View {
                         .padding(.horizontal, 8)
                         .cornerRadius(20)
 
+                    let isTextEmpty = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    
                     Button {
                         action()
                     } label: {
                         Image(systemName: "paperplane.fill")
                             .foregroundColor(.white)
                             .padding(10)
-                            .background(Circle().fill(Color.accentColor))
+                            .background(Circle().fill(isTextEmpty ? Color.gray : Color.accentColor))
+                            .opacity(isTextEmpty ? 0.6 : 1.0)
                     }
+                    .disabled(isTextEmpty)
+                    .animation(.easeInOut(duration: 0.2), value: isTextEmpty)
                 }
                 .padding(8)
             }
