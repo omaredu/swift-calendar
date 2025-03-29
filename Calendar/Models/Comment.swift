@@ -7,9 +7,16 @@
 
 import Foundation
 
-struct Comment: Identifiable {
-    let id = UUID()
+struct Comment: Identifiable, Codable {
+    let id: String
     let user: User
     let text: String
     let date: Date
+    
+    init(id: String = UUID().uuidString, user: User, text: String, date: Date) {
+        self.id = id
+        self.user = user
+        self.text = text
+        self.date = date
+    }
 }

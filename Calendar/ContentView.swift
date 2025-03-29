@@ -10,17 +10,28 @@ import SwiftData
 import FirebaseVertexAI
 
 struct ContentView: View {
+    @ObservedObject var eventsViewModel = EventsViewModel()
     @Environment(\.modelContext) private var modelContext
     private let vertex = VertexAI.vertexAI()
     @State private var generatedText = ""
 
     var body: some View {
+        Button("Fetch Events") {
+            fetchEvents()
+        }
         Button("Generate") {
             Task {
                 await generate()
             }
         }
         Text(generatedText)
+        ForEach(eventsViewModel.events) { event in
+            Text(event.title)
+        }
+    }
+    
+    private func fetchEvents() {
+        eventsViewModel.fetch()
     }
     
     private func generate() async {

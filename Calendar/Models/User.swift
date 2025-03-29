@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct User: Identifiable {
-    let id = UUID()
+struct User: Identifiable, Codable {
+    let id: String
     let name: String
+    
+    init(id: String = UUID().uuidString, name: String) {
+        self.id = id
+        self.name = name
+    }
 }
