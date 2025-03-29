@@ -21,7 +21,7 @@ class EventsViewModel: ObservableObject {
             Calendar.current.isDate(event.date, inSameDayAs: date)
         }
     }
-
+    
     func fetchEvents() {
         db.collection("events").addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {

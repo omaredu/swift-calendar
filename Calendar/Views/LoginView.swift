@@ -20,7 +20,7 @@ struct LoginView: View {
                                 .font(.largeTitle)
                                 .fontDesign(.serif)
 
-                            Text("Continúa tu experiencia en Today's Space")
+                            Text("Continúa tu experiencia en Wherevent")
                                 .font(.body)
                                 .foregroundColor(.secondary)
                         }

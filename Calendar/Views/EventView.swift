@@ -8,8 +8,8 @@ import SwiftUI
 
 struct EventView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @ObservedObject var commentsViewModel: CommentsViewModel =
-        CommentsViewModel()
+    @ObservedObject var commentsViewModel: CommentsViewModel = CommentsViewModel()
+    @ObservedObject var eventsViewModel: EventsViewModel = EventsViewModel()
     let event: Event
 
     var body: some View {
@@ -24,7 +24,10 @@ struct EventView: View {
                             Text(DatesUtil.getMonthName(from: event.date))
                         }
                         Spacer()
-                        CountryBadge(country: event.country)
+                        
+                        VStack(alignment: .trailing, spacing: 12) {
+                            CountryBadge(country: event.country)
+                        }
                     }
 
                     VStack(alignment: .leading, spacing: 20) {
@@ -32,6 +35,11 @@ struct EventView: View {
                             .font(.title)
                             .fontDesign(.serif)
                             .fontWeight(.bold)
+                        
+                        ImageCarouselView(images: event.images)
+                            .padding(.top, 12)
+                            .padding(.bottom, 4)
+                            .padding(.horizontal, -16) // Negative padding to extend beyond parent padding
 
                         if !event.description.isEmpty {
                             VStack(alignment: .leading, spacing: 8) {
@@ -46,7 +54,7 @@ struct EventView: View {
 
                         if !commentsViewModel.comments.isEmpty {
                             VStack(alignment: .leading) {
-                                Text("Discusión")
+                                Text("Conversación")
                                     .font(.headline)
                                 Spacer(minLength: 20)
                                 ForEach(commentsViewModel.comments) { comment in
@@ -90,6 +98,9 @@ struct EventView: View {
 }
 
 #Preview {
-    EventView(event: Event.mocks.first!)
-        .environmentObject(AuthViewModel())
+    let authViewModel = AuthViewModel()
+    let eventsViewModel = EventsViewModel()
+    
+    return EventView(eventsViewModel: eventsViewModel, event: Event.mocks.first!)
+        .environmentObject(authViewModel)
 }

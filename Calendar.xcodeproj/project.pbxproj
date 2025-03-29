@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		446480E52D975F0600AFBF1F /* Calendar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calendar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		446480E52D975F0600AFBF1F /* Wherevent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wherevent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -70,7 +70,7 @@
 		446480E62D975F0600AFBF1F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				446480E52D975F0600AFBF1F /* Calendar.app */,
+				446480E52D975F0600AFBF1F /* Wherevent.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -104,7 +104,7 @@
 				446481152D9775D000AFBF1F /* FirebaseAppCheck */,
 			);
 			productName = Calendar;
-			productReference = 446480E52D975F0600AFBF1F /* Calendar.app */;
+			productReference = 446480E52D975F0600AFBF1F /* Wherevent.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -189,7 +189,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.omaredu.Calendar;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Wherevent;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -220,7 +220,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.omaredu.Calendar;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Wherevent;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

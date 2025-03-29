@@ -35,7 +35,7 @@ struct AddCommentView: View {
                 }
 
                 HStack {
-                    TextField("Agrega un comentario...", text: $text)
+                    TextField("Conversa con el mundo...", text: $text)
                         .padding(10)
                         .padding(.horizontal, 8)
                         .cornerRadius(20)

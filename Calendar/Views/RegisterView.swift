@@ -23,7 +23,7 @@ struct RegisterView: View {
                                 .font(.largeTitle)
                                 .fontDesign(.serif)
 
-                            Text("Únete a la comunidad de Today's Space")
+                            Text("Únete a la comunidad de Wherevent")
                                 .font(.body)
                                 .foregroundColor(.secondary)
                         }
