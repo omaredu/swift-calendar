@@ -13,24 +13,31 @@ class CommentsViewModel: ObservableObject {
     private var db = Firestore.firestore()
 
     func fetchCommentsForEvent(_ event: Event) {
-        db.collection("events").document("RWuDrMtb31mFC7E55hQV").collection("comments")
-            .addSnapshotListener { [weak self] (querySnapshot, error) in
-                guard let self = self,
-                      let documents = querySnapshot?.documents else {
-                    print("No comments found")
-                    return
-                }
-                self.handleSnapshot(documents: documents, event: event)
+        db.collection("events").document("RWuDrMtb31mFC7E55hQV").collection(
+            "comments"
+        )
+        .addSnapshotListener { [weak self] (querySnapshot, error) in
+            guard let self = self,
+                let documents = querySnapshot?.documents
+            else {
+                print("No comments found")
+                return
             }
+            self.handleSnapshot(documents: documents, event: event)
+        }
     }
 
-    private func handleSnapshot(documents: [QueryDocumentSnapshot], event: Event) {
+    private func handleSnapshot(
+        documents: [QueryDocumentSnapshot], event: Event
+    ) {
         var tempComments: [Comment] = []
         var remainingFetches = 0 {
             didSet {
                 if remainingFetches == 0 {
                     DispatchQueue.main.async {
-                        self.comments = tempComments.sorted { $0.date > $1.date }
+                        self.comments = tempComments.sorted {
+                            $0.date > $1.date
+                        }
                     }
                 }
             }
@@ -42,7 +49,10 @@ class CommentsViewModel: ObservableObject {
                 remainingFetches += 1
                 userRef.getDocument { userSnapshot, error in
                     defer { remainingFetches -= 1 }
-                    if let comment = self.decodeComment(from: userSnapshot, data: data, event: event, documentID: document.documentID) {
+                    if let comment = self.decodeComment(
+                        from: userSnapshot, data: data, event: event,
+                        documentID: document.documentID)
+                    {
                         tempComments.append(comment)
                     }
                 }
@@ -50,7 +60,10 @@ class CommentsViewModel: ObservableObject {
         }
     }
 
-    private func decodeComment(from userSnapshot: DocumentSnapshot?, data: [String: Any], event: Event, documentID: String) -> Comment? {
+    private func decodeComment(
+        from userSnapshot: DocumentSnapshot?, data: [String: Any], event: Event,
+        documentID: String
+    ) -> Comment? {
         do {
             guard var userData = userSnapshot?.data() else {
                 return nil
@@ -67,5 +80,35 @@ class CommentsViewModel: ObservableObject {
             print("Error decoding comment: \(error)")
             return nil
         }
+    }
+
+    func addComment(_ text: String, for eventId: String, user: User, event: Event) async throws -> Comment {
+        let userRef = db.collection("users").document(user.id)
+        let commentRef = db.collection("events")
+            .document(eventId)
+            .collection("comments")
+            .document()
+
+        let now = Date()
+        let commentData: [String: Any] = [
+            "userId": userRef,
+            "text": text,
+            "date": now
+        ]
+
+        try await commentRef.setData(commentData)
+
+        let userSnapshot = try await userRef.getDocument()
+
+        guard let comment = decodeComment(
+            from: userSnapshot,
+            data: commentData,
+            event: event,
+            documentID: commentRef.documentID
+        ) else {
+            throw NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to decode comment"])
+        }
+
+        return comment
     }
 }
