@@ -60,6 +60,7 @@ struct EventView: View {
                             }
                         }
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     Spacer()
                 }.padding()
