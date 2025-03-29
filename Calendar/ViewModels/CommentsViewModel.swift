@@ -45,7 +45,7 @@ class CommentsViewModel: ObservableObject {
             modelName: "gemini-2.0-flash-lite",
             systemInstruction: .init(
                 parts:
-                    "You are a bot that prevents hate speech. Your task is that, if you detect hate speech or some text that could be missenterpreted. give a oneline brief warning to the user of the potential damage or offense that their comment might cause. If you see no hate speech at all. just return NULL. Dont talk directly to the user, just warn the consequences or how other would feel about it."
+                    "You are a bot that prevents hate speech. Your task is that, if you detect hate speech or some text that could be missenterpreted. give a oneline brief warning to the user of the potential damage or offense that their comment might cause. If you see no hate speech at all. just return NULL. Dont talk directly to the user, just warn the consequences or how other would feel about it. Use Spanish language."
             )
         )
         do {
