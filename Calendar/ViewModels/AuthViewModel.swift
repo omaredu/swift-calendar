@@ -5,6 +5,10 @@ import SwiftUI
 class AuthViewModel: ObservableObject {
     @Published var currentUser: User?
     @Published var errorMessage: String?
+    
+    init() {
+        checkUserSession()
+    }
 
     func login(
         email: String, password: String, completion: @escaping (Bool) -> Void
@@ -62,10 +66,12 @@ class AuthViewModel: ObservableObject {
             let db = Firestore.firestore()
             let userRef = db.collection("users").document(userId)
 
-            try await userRef.setData(["name": name])
+            try await userRef.setData(["id": userId, "name": name])
 
-            self.fetchUserData(userId: userId)
-            return nil
+            // Create and store user object
+            let newUser = User(id: userId, name: name)
+            self.currentUser = newUser
+            return newUser
         } catch {
             self.errorMessage =
                 "Error creating user: \(error.localizedDescription)"
@@ -92,7 +98,7 @@ class AuthViewModel: ObservableObject {
             if let document = document, document.exists {
                 if let userData = document.data() {
                     self.currentUser = User(
-                        id: userData["id"] as? String ?? "",
+                        id: userId,
                         name: userData["name"] as? String ?? "User"
                     )
                 }
@@ -103,6 +109,12 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+    private func checkUserSession() {
+        if let currentUser = Auth.auth().currentUser {
+            fetchUserData(userId: currentUser.uid)
+        }
+    }
+    
     private func isValidEmail(_ email: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegEx)

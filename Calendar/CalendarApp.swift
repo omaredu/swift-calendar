@@ -26,6 +26,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct CalendarApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @StateObject private var authViewModel = AuthViewModel()
     
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([])
@@ -43,6 +44,7 @@ struct CalendarApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(authViewModel)
         }
         .modelContainer(sharedModelContainer)
     }

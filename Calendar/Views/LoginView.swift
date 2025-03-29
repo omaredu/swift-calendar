@@ -2,112 +2,80 @@ import FirebaseAuth
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var authViewModel = AuthViewModel()
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var navigateToRegister: Bool = false
-    @State private var navigateToHome: Bool = false
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack(alignment: .bottom) {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        // Header
-                        VStack(alignment: .leading, spacing: 8) {
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading) {
+                        Spacer(minLength: 100)
+
+                        VStack(alignment: .leading) {
+
                             Text("Inicia sesión")
                                 .font(.largeTitle)
                                 .fontDesign(.serif)
-                                .fontWeight(.bold)
 
-                            Text("Continúa tu experiencia en Calendar")
+                            Text("Continúa tu experiencia en Today's Space")
                                 .font(.body)
                                 .foregroundColor(.secondary)
                         }
-                        .padding(.top, 40)
 
-                        // Email field
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Correo electrónico")
-                                .font(.headline)
+                        Spacer(minLength: 100)
 
-                            TextField(
-                                "Ingresa tu correo electrónico", text: $email
+                        VStack(alignment: .leading, spacing: 24) {
+                            FormTextField(
+                                title: "Correo electrónico",
+                                placeholder: "Ingresa tu correo electrónico",
+                                text: $email
                             )
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(16)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Color(.systemGray4), lineWidth: 1)
-                            )
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                        }
 
-                        // Password field
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Contraseña")
-                                .font(.headline)
-
-                            SecureField(
-                                "Ingresa tu contraseña", text: $password
-                            )
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(16)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Color(.systemGray4), lineWidth: 1)
+                            FormTextField(
+                                title: "Contraseña",
+                                placeholder: "Ingresa tu contraseña",
+                                text: $password,
+                                isSecure: true
                             )
                         }
+                        
+                        Spacer(minLength: 200)
+                    }
+                    .padding()
+                }
 
-                        // Login button
-                        Button {
+                VStack(spacing: 24) {
+                    PrimaryButton(
+                        title: "Iniciar sesión",
+                        action: {
                             authViewModel.login(
                                 email: email, password: password
-                            ) { success in
-                                if success {
-                                    navigateToHome = true
-                                }
-                            }
-                        } label: {
-                            Text("Iniciar sesión")
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color.accentColor)
-                                .cornerRadius(16)
+                            ) { _ in }
                         }
-                        .padding(.top, 16)
+                    )
 
-                        // Register link
-                        Button {
-                            navigateToRegister = true
-                        } label: {
-                            HStack {
-                                Spacer()
-                                Text("¿No tienes cuenta? Regístrate")
-                                    .foregroundColor(.accentColor)
-                                Spacer()
-                            }
-                        }
-                        .padding(.top, 24)
-
-                        Spacer()
+                    Button {
+                        navigateToRegister = true
+                    } label: {
+                        Text("¿No tienes cuenta? Regístrate")
+                            .foregroundColor(.accentColor)
                     }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, 100)  // Extra space at bottom for scrolling
                 }
-
-                // Navigation links
-                NavigationLink(
-                    destination: RegisterView(), isActive: $navigateToRegister
-                ) {
-                    EmptyView()
-                }
-
+                .padding()
+                .background(.ultraThinMaterial)
+                .overlay(
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(
+                            Color.gray.opacity(0.3)),
+                    alignment: .top
+                )
+            }
+            .navigationDestination(isPresented: $navigateToRegister) {
+                RegisterView()
             }
             .alert(
                 isPresented: Binding<Bool>(
@@ -130,4 +98,6 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
+        .environmentObject(AuthViewModel())
 }
+ 

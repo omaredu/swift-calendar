@@ -56,6 +56,7 @@ struct EventView: View {
                                             alignment: .top
                                         )
                                 }
+                                Spacer(minLength: 100)
                             }
                         }
                     }
