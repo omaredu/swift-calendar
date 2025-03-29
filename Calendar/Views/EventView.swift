@@ -7,9 +7,9 @@
 import SwiftUI
 
 struct EventView: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
     @ObservedObject var commentsViewModel: CommentsViewModel =
         CommentsViewModel()
-
     let event: Event
 
     var body: some View {
@@ -65,8 +65,16 @@ struct EventView: View {
                 }.padding()
             }
 
-            AddCommentView()
-                .padding()
+            AddCommentView(text: $commentsViewModel.newCommentText, warning: commentsViewModel.warning) {
+                Task {
+                    do {
+                        try await commentsViewModel.addComment(for: event, user: authViewModel.currentUser!)
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+            .padding()
         }
         .onAppear {
             commentsViewModel.fetchCommentsForEvent(event)
@@ -76,4 +84,5 @@ struct EventView: View {
 
 #Preview {
     EventView(event: Event.mocks.first!)
+        .environmentObject(AuthViewModel())
 }
