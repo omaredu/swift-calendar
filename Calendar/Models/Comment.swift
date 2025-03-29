@@ -12,11 +12,34 @@ struct Comment: Identifiable, Codable {
     let user: User
     let text: String
     let date: Date
-    
-    init(id: String = UUID().uuidString, user: User, text: String, date: Date) {
+    let eventId: String
+
+    init(
+        id: String = UUID().uuidString,
+        user: User,
+        text: String,
+        date: Date,
+        eventId: String
+    ) {
         self.id = id
         self.user = user
         self.text = text
         self.date = date
+        self.eventId = eventId
     }
+
+    static let mocks: [Comment] = [
+        Comment(
+            user: User.mocks.first!,
+            text: "¡Qué buena idea!",
+            date: Date(),
+            eventId: Event.mocks.first!.id
+        ),
+        Comment(
+            user: User.mocks.last!,
+            text: "¡Me encanta!",
+            date: Date(),
+            eventId: Event.mocks.first!.id
+        ),
+    ]
 }

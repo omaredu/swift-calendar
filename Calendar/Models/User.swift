@@ -15,4 +15,10 @@ struct User: Identifiable, Codable {
         self.id = id
         self.name = name
     }
+    
+    static let mocks: [User] = [
+        User(name: "Omar"),
+        User(name: "Luis"),
+        User(name: "Ana"),
+    ]
 }
