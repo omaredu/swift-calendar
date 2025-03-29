@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EventView: View {
     var body: some View {
-        Text("Hello, World!")
+        Text("Bien tilín!")
     }
 }
 
