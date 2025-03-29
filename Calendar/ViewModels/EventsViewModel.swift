@@ -22,7 +22,7 @@ class EventsViewModel: ObservableObject {
         }
     }
 
-    func fetch() {
+    func fetchEvents() {
         db.collection("events").addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No events found")

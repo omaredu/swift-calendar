@@ -1,159 +1,159 @@
-import SwiftUI
 import FirebaseAuth
+import SwiftUI
 
-struct Register: View {
-    
-    @State var password: String = ""
-    @State var confirmPassword: String = ""
-    @Binding var isAuthenticated: Bool
-    @Binding var email: String
-    @Binding var unregistered: Bool
-    public let cornerRadious: CGFloat = 20
-    @State private var errorMessage: String = "" // For handling errors
-    @State private var showAlert: Bool = false // To show alert
-    
+struct RegisterView: View {
+    @StateObject private var authViewModel = AuthViewModel()
+    @State private var name: String = ""
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @State private var confirmPassword: String = ""
+    @State private var navigateToLogin: Bool = false
+    @State private var navigateToHome: Bool = false
+    @Environment(\.presentationMode) var presentationMode
+
     var body: some View {
-        NavigationView {
-            VStack {
-                if isAuthenticated {
-                    // Redirect to Home view (when user is authenticated)
-                    NavigationLink(destination: HomeView(isAuthenticated: $isAuthenticated)) {
-                        Text("Welcome! You're authenticated.")
-                            .padding()
-                            .font(.title)
+        ZStack(alignment: .bottom) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    // Header
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Crea tu cuenta")
+                            .font(.largeTitle)
+                            .fontDesign(.serif)
+                            .fontWeight(.bold)
+
+                        Text("Únete a la comunidad de Calendar")
+                            .font(.body)
+                            .foregroundColor(.secondary)
                     }
-                } else {
-                    Text("Register")
-                        .font(.largeTitle)
-                        .padding(.bottom, 30)
-                        .bold()
+                    .padding(.top, 40)
                     
-                    VStack(alignment: .leading) {
-                        Text("Correo electrónico")
-                            .padding(.horizontal)
+                    // Name field
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Nombre")
                             .font(.headline)
-                            .foregroundColor(.black)
-                        
+
+                        TextField("Ingresa tu nombre", text: $name)
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(16)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color(.systemGray4), lineWidth: 1)
+                            )
+                            .autocapitalization(.words)
+                    }
+
+                    // Email field
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Correo electrónico")
+                            .font(.headline)
+
                         TextField("Ingresa tu correo electrónico", text: $email)
                             .padding()
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(16)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color(.systemGray4), lineWidth: 1)
+                            )
                             .autocapitalization(.none)
                             .disableAutocorrection(true)
-                            .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 5, y: 5)
                     }
-                    .padding(.horizontal, 20)
-                    
-                    VStack(alignment: .leading) {
+
+                    // Password field
+                    VStack(alignment: .leading, spacing: 8) {
                         Text("Contraseña")
-                            .padding(.horizontal)
                             .font(.headline)
-                            .foregroundColor(.black)
-                        
+
                         SecureField("Ingresa tu contraseña", text: $password)
                             .padding()
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                            .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 5, y: 5)
+                            .background(.ultraThinMaterial)
+                            .cornerRadius(16)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color(.systemGray4), lineWidth: 1)
+                            )
                     }
-                    .padding(20)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Confirmar Contraseña")
-                            .padding(.horizontal)
-                            .font(.headline)
-                            .foregroundColor(.black)
-                        
-                        SecureField("Confirma tu contraseña", text: $confirmPassword)
-                            .padding()
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                            .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 5, y: 5)
-                    }
-                    .padding(.horizontal, 20)
-                    
-                    Button(action: {
-                        // Handle registration logic
-                        registerUser()
-                    }) {
-                        Text("Registrarse")
-                            .bold()
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: 150)
-                            .background(.blue)
-                            .cornerRadius(cornerRadious)
-                            .shadow(color: Color.gray.opacity(0.5), radius: 10, x: 5, y: 5)
-                    }
-                    .padding(.horizontal, 30)
-                    
-                    Button(action: {
-                        // Redirect to Login view
-                        unregistered = false
-                    }) {
-                        Text("¿Ya tienes cuenta? Inicia sesión")
-                    }
-                    .padding(.top, 30)
-                }
-            }
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-            }
-        }
-    }
-    
-    // Register the user with Firebase
-    private func registerUser() {
-        // Validation checks for email and password
-        guard isValidEmail(email) else {
-            errorMessage = "Invalid email format."
-            showAlert = true
-            return
-        }
-        
-        guard password == confirmPassword else {
-            errorMessage = "Passwords do not match."
-            showAlert = true
-            return
-        }
-        
-        guard password.count >= 6 else {
-            errorMessage = "Password must be at least 6 characters."
-            showAlert = true
-            return
-        }
 
-        // Firebase registration logic
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if let error = error {
-                // Handle error (e.g., show an alert)
-                errorMessage = "Error creating user: \(error.localizedDescription)"
-                showAlert = true
-            } else {
-                // Successful registration
-                isAuthenticated = true
-                                
-                unregistered = false
-                
+                    // Confirm Password field
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Confirmar Contraseña")
+                            .font(.headline)
+
+                        SecureField(
+                            "Confirma tu contraseña", text: $confirmPassword
+                        )
+                        .padding()
+                        .background(.ultraThinMaterial)
+                        .cornerRadius(16)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color(.systemGray4), lineWidth: 1)
+                        )
+                    }
+
+                    // Register button
+                    Button {
+                        Task {
+                            guard let user = await authViewModel.register(
+                                name: name,
+                                email: email, password: password,
+                                confirmPassword: confirmPassword
+                            ) else { return }
+                            
+                            navigateToHome = true
+                        }
+                        
+                    } label: {
+                        Text("Registrarse")
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.accentColor)
+                            .cornerRadius(16)
+                    }
+                    .padding(.top, 16)
+
+                    // Login link
+                    Button {
+                        presentationMode.wrappedValue.dismiss()
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("¿Ya tienes cuenta? Inicia sesión")
+                                .foregroundColor(.accentColor)
+                            Spacer()
+                        }
+                    }
+                    .padding(.top, 24)
+
+                    Spacer()
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 100)  // Extra space at bottom for scrolling
             }
         }
-    }
-    
-    
-    private func isValidEmail(_ email: String) -> Bool {
-        // Basic email format check (can be more advanced)
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: email)
+        .alert(
+            isPresented: Binding<Bool>(
+                get: { authViewModel.errorMessage != nil },
+                set: { newValue in
+                    if !newValue {
+                        authViewModel.errorMessage = nil
+                    }
+                }
+            )
+        ) {
+            Alert(
+                title: Text("Error"),
+                message: Text(authViewModel.errorMessage!),
+                dismissButton: .default(Text("OK")))
+        }
+        .navigationBarBackButtonHidden(false)
     }
 }
 
 #Preview {
-    Register(
-        isAuthenticated: .constant(false),
-        email: .constant(""),
-        unregistered: .constant(true)
-    )
+    RegisterView()
 }
