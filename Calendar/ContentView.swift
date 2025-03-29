@@ -1,46 +1,32 @@
-//
-//  ContentView.swift
-//  Calendar
-//
-//  Created by Omar Sánchez on 28/03/25.
-//
-
 import SwiftUI
-import SwiftData
-import FirebaseVertexAI
+import FirebaseAuth
 
 struct ContentView: View {
-    @ObservedObject var eventsViewModel = EventsViewModel()
-    @Environment(\.modelContext) private var modelContext
-    private let vertex = VertexAI.vertexAI()
-    @State private var generatedText = ""
+    @State private var userEmail: String = ""
+    @State private var isAuthenticated: Bool = false
+    @State private var unregistered: Bool = false
 
     var body: some View {
-        Button("Fetch Events") {
-            fetchEvents()
-        }
-        Button("Generate") {
-            Task {
-                await generate()
+        NavigationView {
+            VStack {
+                if isAuthenticated {
+                    HomeView(isAuthenticated: $isAuthenticated)
+                } else {
+                    Login(isAuthenticated: $isAuthenticated, email: $userEmail, unregistered: $unregistered)
+                }
+            }
+            .onAppear {
+                checkAuthentication()
             }
         }
-        Text(generatedText)
-        ForEach(eventsViewModel.events) { event in
-            Text(event.title)
-        }
     }
     
-    private func fetchEvents() {
-        eventsViewModel.fetch()
-    }
-    
-    private func generate() async {
-        let model = vertex.generativeModel(modelName: "gemini-2.0-flash")
-        do {
-            let response = try await model.generateContent("Say something nice")
-            generatedText = response.text ?? "No text generated"
-        } catch {
-            print(error)
+    func checkAuthentication() {
+        if let currentUser = Auth.auth().currentUser {
+            isAuthenticated = true
+            userEmail = currentUser.email ?? ""
+        } else {
+            isAuthenticated = false
         }
     }
 }
