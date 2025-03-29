@@ -1,48 +1,41 @@
+//
+//  AddCommentView.swift
+//  Calendar
+//
+//  Created by Omar Sánchez on 29/03/25.
+//
+
 import SwiftUI
 
 struct AddCommentView: View {
-    @Environment(\.dismiss) var dismiss
-    @ObservedObject var viewModel: CommentsViewModel
-    @State private var commentText = ""
-    let eventId: String
-    let currentUser: User
-    
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    TextField("Escribe tu comentario", text: $commentText, axis: .vertical)
-                        .lineLimit(5...)
-                }
+        ZStack {
+            HStack {
+                TextField("Agrega un comentario...", text: .constant(""))
+                    .padding(10)
+                    .padding(.horizontal, 8)
+                    .cornerRadius(20)
                 
-//                if viewModel.isLoading {
-//                    ProgressView()
-//                }
-            }
-            .navigationTitle("Nuevo Comentario")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancelar") {
-                        dismiss()
-                    }
-                }
-                
-                ToolbarItem(placement: .confirmationAction) {
-//                    Button("Enviar") {
-//                        viewModel.addComment(commentText, for: eventId, user: currentUser)
-//                        dismiss()
-//                    }
-//                    .disabled(commentText.isEmpty || viewModel.isLoading)
+                Button {
+                    // Add comment
+                } label: {
+                    Image(systemName: "paperplane.fill")
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Circle().fill(Color.accentColor))
                 }
             }
-//            .alert("Error", isPresented: .constant(viewModel.error != nil)) {
-//                Button("OK", role: .cancel) {
-//                    viewModel.error = nil
-//                }
-//            } message: {
-//                Text(viewModel.error?.localizedDescription ?? "Error desconocido")
-//            }
+            .padding(8)
+            .background(.ultraThinMaterial)
+            .cornerRadius(30)
+            .overlay(
+                RoundedRectangle(cornerRadius: 30)
+                    .stroke(Color(.systemGray4), lineWidth: 1)
+            )
         }
     }
+}
+
+#Preview(traits: .sizeThatFitsLayout) {
+    AddCommentView()
 }
